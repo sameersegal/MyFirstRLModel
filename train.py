@@ -25,7 +25,17 @@ trainer = GRPOTrainer(
 )
 
 
+def main():
+    from accelerate import Accelerator
+    accelerator = Accelerator()
+
+    try:
+        trainer.train()
+        # save the model
+        trainer.save_model()
+    finally:
+        accelerator.end_training()   # clean shutdown on every rank
+
 if __name__ == "__main__":
-    # Start training
-    print("Starting training...")
-    trainer.train()
+    
+    main()
